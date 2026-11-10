@@ -25,7 +25,7 @@ async def test_map_and_validation(monkeypatch: pytest.MonkeyPatch) -> None:
         assert bbox == [138.5, 36, 139.5, 37]
         return {"month": month, "statistics": {"mean": 0.012}, "png": png}
 
-    monkeypatch.setattr("jaxa_earth_mcp.server.render_anomaly", fake_render)
+    monkeypatch.setattr("jaxa_earth_mcp.client.render_anomaly", fake_render)
     async with Client(create_server()) as client:
         result = await client.call_tool(
             "get_ndvi_anomaly", {"month": "2021-08", "bbox": [138.5, 36, 139.5, 37]}
