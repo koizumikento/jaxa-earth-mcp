@@ -1,8 +1,10 @@
 # jaxa-earth-mcp
 
-JAXA Earth 植生指数の平年差の読み取り専用MCPサーバーです。Python 3.12以上とuv（0.13.4で検証）を使います。上流APIキーの設定は不要です。
+指定範囲・月の植生指数（NDVI）が平年値とどれだけ違うかを、画像と数値で確認できます。読み取り専用で、APIキーの設定は不要です。[uv](https://docs.astral.sh/uv/) と Git が必要です。Python 3.12以上に対応しています。
 
-## MCPクライアント設定
+## MCPクライアントに登録する
+
+このリポジトリへのアクセス権がある環境でクローンします。
 
 ```sh
 git clone https://github.com/koizumikento/jaxa-earth-mcp.git
@@ -10,18 +12,51 @@ cd jaxa-earth-mcp
 uv sync --locked
 ```
 
-クライアントの設定に、クローン先の絶対パスを指定します。
+以下の `/absolute/path/to/jaxa-earth-mcp` は、クローン先の絶対パスに置き換えてください。Windowsでも `C:/projects/jaxa-earth-mcp` のようにスラッシュで指定できます。
+
+### Codex
+
+```sh
+codex mcp add jaxa-earth-mcp -- uv --directory "/absolute/path/to/jaxa-earth-mcp" run --locked jaxa-earth-mcp
+codex mcp list
+```
+
+`codex mcp list` で登録を確認し、Codexの新しいセッションで `/mcp` を開くと、接続状態を確認できます。[Codexの公式設定ガイド](https://learn.chatgpt.com/docs/extend/mcp?surface=cli)
+
+Codexのデスクトップアプリでは、設定の「MCP servers」でSTDIOサーバーを追加し、下のJSON例と同じコマンド・引数を指定する方法もあります。
+
+### Claude Desktop / Cursor
+
+次のファイルに設定します。
+
+- Claude Desktop（Windows） `%APPDATA%/Claude/claude_desktop_config.json`
+- Claude Desktop（macOS） `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Cursor `.cursor/mcp.json`（プロジェクト内）
+
+既に `mcpServers` がある場合は、その中にサーバーの項目を追加してください。保存後にクライアントを再起動し、ツールが表示されるか確認します。[設定ファイルの場所と接続手順](https://py.sdk.modelcontextprotocol.io/get-started/real-host/)
 
 ```json
 {
   "mcpServers": {
     "jaxa-earth-mcp": {
       "command": "uv",
-      "args": ["--directory", "/absolute/path/to/jaxa-earth-mcp", "run", "--locked", "jaxa-earth-mcp"]
+      "args": [
+        "--directory",
+        "/absolute/path/to/jaxa-earth-mcp",
+        "run",
+        "--locked",
+        "jaxa-earth-mcp"
+      ]
     }
   }
 }
 ```
+
+`uv` が見つからない場合は、設定のコマンドに実行ファイルの絶対パスを指定してください。
+
+登録後は、チャットで次のように聞けます。
+
+> 北緯36〜37度、東経138.5〜139.5度の2021年8月の植生指数を平年と比べて。
 
 ## ツール
 
