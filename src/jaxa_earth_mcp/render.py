@@ -33,6 +33,8 @@ def render(month: str, bbox: list[float]) -> dict[str, Any]:
     values = {key: float(value.item()) for key, value in anomaly.timeseries.items()}
     if not math.isfinite(values["mean"]):
         raise ValueError("No valid NDVI pixels in the requested region.")
+    # The SDK uses the collection label as the image title.
+    anomaly.collection = "JAXA Earth API | NDVI anomaly vs 2012-2021 normal"
     image = anomaly.show_images(cmap="turbo", clim=[-0.3, 0.3], output="png_buffer")
     return {
         "month": month,
