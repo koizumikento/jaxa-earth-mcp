@@ -133,7 +133,7 @@ print(catalog["collections"])
 
 ## 出典と利用条件
 
-コードはMIT Licenseです。上流データの権利と利用条件は各提供元の定めに従います。[公式仕様](https://data.earth.jaxa.jp/api/python/v0.1.6/ja/tutorials/python/) · [利用案内](https://data.earth.jaxa.jp/ja/)
+このソフトウェアは JAXA Earth API for Python のモジュールを利用しています。衛星データは実行時に取得し、このリポジトリには同梱していません。コードは MIT License です。取得したデータは、データセットごとの STAC に記載された利用条件に従ってください。結果を公表する場合は、JAXA Earth API を利用したことを明記してください。[公式仕様](https://data.earth.jaxa.jp/api/python/v0.1.6/ja/tutorials/python/) · [利用条件](https://data.earth.jaxa.jp/ja/)
 
 ## 開発
 
