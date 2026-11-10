@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jaxa-earth-mcp"
+version = "0.1.0"
+description = "Read-only MCP for monthly JAXA Earth vegetation anomalies"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+  "jaxa-earth==0.1.6",
+  "matplotlib>=3.10,<4",
+  "mcp>=2.2.0,<3",
+  "pydantic>=2.13.5,<3",
+]
+
+[project.scripts]
+jaxa-earth-mcp = "jaxa_earth_mcp.__main__:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4.1",
+  "pytest-asyncio>=1.1.0",
+  "ruff>=0.16.9",
+  "ty>=0.0.84",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jaxa_earth_mcp"]
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
