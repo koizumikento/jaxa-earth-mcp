@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "jaxa-earth-mcp"
 version = "0.1.0"
-description = "Read-only MCP for monthly JAXA Earth vegetation anomalies"
+description = "Read-only MCP for JAXA Earth vegetation data and collection discovery"
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"

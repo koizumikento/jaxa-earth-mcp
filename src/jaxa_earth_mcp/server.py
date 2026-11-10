@@ -4,7 +4,7 @@ from base64 import b64encode
 from mcp.server import MCPServer
 from mcp.types import CallToolResult, ImageContent, TextContent, ToolAnnotations
 
-from .client import Bounds, Month
+from .client import Bounds, Month, get_ndvi_time_series, search_collections
 from .client import get_ndvi_anomaly as fetch_ndvi_anomaly
 
 READ_ONLY = ToolAnnotations(
@@ -32,4 +32,6 @@ def create_server() -> MCPServer:
             structured_content=result.metadata,
         )
 
+    mcp.tool(annotations=READ_ONLY)(get_ndvi_time_series)
+    mcp.tool(annotations=READ_ONLY)(search_collections)
     return mcp

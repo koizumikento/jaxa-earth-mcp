@@ -27,5 +27,7 @@ jobs:
           import asyncio
           from jaxa_earth_mcp import create_server
 
-          assert len(asyncio.run(create_server().list_tools())) == 1
+          assert {tool.name for tool in asyncio.run(create_server().list_tools())} == {
+              "get_ndvi_anomaly", "get_ndvi_time_series", "search_collections",
+          }
           PY

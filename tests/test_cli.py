@@ -22,3 +22,43 @@ def test_cli_uses_public_function(
     with pytest.raises(SystemExit):
         cli.run_cli(args)
     assert output.read_bytes() == b"png"
+
+
+@pytest.mark.parametrize(
+    ("handler_name", "args", "expected"),
+    [
+        (
+            "get_ndvi_time_series",
+            [
+                "get-ndvi-time-series",
+                "--start-month",
+                "2021-07",
+                "--end-month",
+                "2021-08",
+                "--bbox",
+                "138.5",
+                "36",
+                "139.5",
+                "37",
+            ],
+            {"start_month": "2021-07", "end_month": "2021-08", "bbox": [138.5, 36, 139.5, 37]},
+        ),
+        (
+            "search_collections",
+            ["search-collections", "--query", "NDVI", "--limit", "2", "--offset", "3"],
+            {"query": "NDVI", "limit": 2, "offset": 3},
+        ),
+    ],
+)
+def test_cli_discovery_commands(
+    monkeypatch: pytest.MonkeyPatch,
+    capsysbinary: pytest.CaptureFixture[bytes],
+    handler_name,
+    args,
+    expected,
+) -> None:
+    handler = AsyncMock(return_value={"result": "日本語"})
+    monkeypatch.setattr(cli, handler_name, handler)
+    cli.run_cli(args)
+    handler.assert_awaited_once_with(**expected)
+    assert json.loads(capsysbinary.readouterr().out) == {"result": "日本語"}
