@@ -2,9 +2,11 @@
 
 JAXA Earthの衛星データを調べるMCPサーバーです。指定した範囲の植生指数（NDVI）の月別推移を調べたり、平年値との差を画像で見たりできます。衛星データのコレクションと収録バンドも検索できます。読み取り専用で、APIキーの設定は不要です。[uv](https://docs.astral.sh/uv/) と Git が必要です。Python 3.12以上に対応しています。
 
+[MCP登録](#mcpクライアントに登録する) · [CLI](#cliで使う) · [Pythonライブラリ](#pythonライブラリとして使う)
+
 ## MCPクライアントに登録する
 
-このリポジトリへのアクセス権がある環境でクローンします。
+[uv](https://docs.astral.sh/uv/) と Git を用意し、リポジトリをクローンします。Python 3.12以上が必要です。
 
 ```sh
 git clone https://github.com/koizumikento/jaxa-earth-mcp.git
@@ -88,7 +90,9 @@ Codexのデスクトップアプリでは、設定の「MCP servers」でSTDIO�
 
 たとえば `{"query":"NDVI monthly","limit":5}` と指定します。大文字・小文字を区別せず、空白で区切った検索語をすべて含むコレクションIDを探し、バンド名とコレクションの公式カタログURLを返します。1ページは最大10件（既定5件）です。次のページは返却された `next_offset` を `offset` に指定し、`next_offset` が `null` なら最終ページです。
 
-## CLI
+## CLIで使う
+
+上の登録手順でクローンしたディレクトリで実行します。
 
 ```sh
 uv run jaxa-earth-mcp get-ndvi-anomaly --month 2021-08 --bbox 138.5 36 139.5 37 --output anomaly.png
@@ -98,9 +102,15 @@ uv run jaxa-earth-mcp search-collections --query "NDVI monthly" --limit 5
 
 結果は標準出力にUTF-8のJSONで出力します。各コマンドの引数は `--help` で確認できます。平年差の地図は `--output` で新規ファイルに保存できます。
 
-## Pythonライブラリ
+## Pythonライブラリとして使う
 
-パッケージをインストールしたPython環境で、下記の非同期関数を直接呼び出せます。
+自分のPythonプロジェクト（`pyproject.toml` があるディレクトリ）で依存関係に追加します。
+
+```sh
+uv add "git+https://github.com/koizumikento/jaxa-earth-mcp.git@main"
+```
+
+次のコードを `example.py` に保存し、同じディレクトリで `uv run python example.py` を実行します。
 
 ```python
 import asyncio
